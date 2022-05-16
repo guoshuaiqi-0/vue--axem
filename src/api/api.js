@@ -1,0 +1,76 @@
+import axios from 'axios';
+
+var baseURL = '/api';
+
+// 获取doken
+const getConfig  = function (){
+    return {
+        baseURL,
+        headers: {
+            authorization: window.sessionStorage.getItem('token')
+        }
+    }
+}
+
+/*
+* @ 获取验证码 
+*/
+export function getCaptchaApi(){
+    return `${baseURL}/captcha?` + Math.random()
+}
+/*
+* @ 获取登录token 
+*/
+export function getLoginApi({payload={}}){
+    return axios.post('/user/login',payload,getConfig())
+}
+/*
+* @ 请求注册
+*/
+export function postRegisterApi({payload = {}}){
+    return axios.post('/user/register', payload,getConfig())
+}
+
+/*
+* @ 获取用户信息
+*/
+
+export function getInfoApi(payload = {}){
+    return axios.post('/user/info', payload, getConfig())
+}
+/*
+* @ 退出登录
+*/
+export function getLogoutApi(payload = {}){
+    return axios.post('/user/logout',payload,getConfig())
+
+}
+
+// @查询获取题库列表
+/**
+ * var params = {
+  @type:<number>,         // 必填项  题目类型  1：单选题  2：多选题  3：填空题  4：问答题   注：暂只支持单选；
+  @pagination:<boolean>,  //非必填  表示是否需要分页  如果传 false：不分页   true:分页   默认不传是分页; 
+  @pageSize:<number>,     //非必填  每页获取几条数据  如果不传 默认是获取10条；
+  @pageNum:<number>,      //非必填  想获取第几页的数据  如果不传 默认是第1页；
+} 	
+ */
+
+export function getQuestionListApi(params = {}){
+    return axios.post('/question/list',params,getConfig())
+}
+
+
+export function getQuestionDeleteApi(params = {}){
+	console.log(params)
+    return axios.post('/question/delete',params,getConfig())
+}
+
+export function getQuestionCreateApi(params = {}){
+    console.log(params)
+    return axios.post('/question/create',params,getConfig())
+}
+export function getQuestionUpdateApi(params = {}){
+    console.log(params)
+    return axios.post('/question/update',params,getConfig())
+}
