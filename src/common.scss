@@ -36,8 +36,8 @@ body {
 }
 
 .align{
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .mar-10{
@@ -58,7 +58,9 @@ body {
 .mr-20{
     margin-top: 20px;
 }
-
+.mr-30{
+    margin-top: 30px;
+}
 .mrr-20{
     margin-right: 20px;
 }

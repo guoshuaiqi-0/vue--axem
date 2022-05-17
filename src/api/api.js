@@ -3,46 +3,50 @@ import axios from 'axios';
 var baseURL = '/api';
 
 // 获取doken
-const getConfig  = function (){
-    return {
-        baseURL,
-        headers: {
-            authorization: window.sessionStorage.getItem('token')
-        }
-    }
+const getConfig = function() {
+	return {
+		baseURL,
+		headers: {
+			authorization: window.sessionStorage.getItem('token')
+		}
+	}
 }
 
 /*
-* @ 获取验证码 
-*/
-export function getCaptchaApi(){
-    return `${baseURL}/captcha?` + Math.random()
+ * @ 获取验证码 
+ */
+export function getCaptchaApi() {
+	return `${baseURL}/captcha?` + Math.random()
 }
 /*
-* @ 获取登录token 
-*/
-export function getLoginApi({payload={}}){
-    return axios.post('/user/login',payload,getConfig())
+ * @ 获取登录token 
+ */
+export function getLoginApi({
+	payload = {}
+}) {
+	return axios.post('/user/login', payload, getConfig())
 }
 /*
-* @ 请求注册
-*/
-export function postRegisterApi({payload = {}}){
-    return axios.post('/user/register', payload,getConfig())
+ * @ 请求注册
+ */
+export function postRegisterApi({
+	payload = {}
+}) {
+	return axios.post('/user/register', payload, getConfig())
 }
 
 /*
-* @ 获取用户信息
-*/
+ * @ 获取用户信息
+ */
 
-export function getInfoApi(payload = {}){
-    return axios.post('/user/info', payload, getConfig())
+export function getInfoApi(payload = {}) {
+	return axios.post('/user/info', payload, getConfig())
 }
 /*
-* @ 退出登录
-*/
-export function getLogoutApi(payload = {}){
-    return axios.post('/user/logout',payload,getConfig())
+ * @ 退出登录
+ */
+export function getLogoutApi(payload = {}) {
+	return axios.post('/user/logout', payload, getConfig())
 
 }
 
@@ -56,21 +60,46 @@ export function getLogoutApi(payload = {}){
 } 	
  */
 
-export function getQuestionListApi(params = {}){
-    return axios.post('/question/list',params,getConfig())
+export function getQuestionListApi(params = {}) {
+	return axios.post('/question/list', params, getConfig())
 }
 
-
-export function getQuestionDeleteApi(params = {}){
+// 
+/*/**
+ * 删除接口
+ * @param {*} params 
+ */
+export function getQuestionDeleteApi(params = {}) {
 	console.log(params)
-    return axios.post('/question/delete',params,getConfig())
+	return axios.post('/question/delete', params, getConfig())
+}
+/**
+ * 	创建题库接口
+ * @param { } params 
+ */
+
+
+export function getQuestionCreateApi(params = {}) {
+	console.log(params)
+	return axios.post('/question/create', params, getConfig())
 }
 
-export function getQuestionCreateApi(params = {}){
-    console.log(params)
-    return axios.post('/question/create',params,getConfig())
+
+/**
+ * 	修改当前题目接口
+ * @param { } params 
+ */
+
+export function getQuestionUpdateApi(params = {}) {
+	console.log(params)
+	return axios.post('/question/update', params, getConfig())
 }
-export function getQuestionUpdateApi(params = {}){
-    console.log(params)
-    return axios.post('/question/update',params,getConfig())
+
+/**
+ * 	获取个人信息接口
+ * @param { } params 
+ */
+
+export function getUserInfoApi(params = {}) {
+	return axios.post('/user/info', params, getConfig())
 }

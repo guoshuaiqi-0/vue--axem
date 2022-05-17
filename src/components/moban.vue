@@ -1,5 +1,5 @@
 <template>
-<div class="">
+<div class="personalData">
    
         
 </div>
@@ -10,7 +10,7 @@
 
 
 export default {
-    name: "",
+    name: "personalData",
     data() {
         return{
             
