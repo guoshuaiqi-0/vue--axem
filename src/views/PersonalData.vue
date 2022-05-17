@@ -43,21 +43,21 @@
 					<el-row type="flex" style="align-items: center;" class="mr-30">
 						<el-col :span="2" style="text-indent: 15px;">所在地</el-col>
 						<el-col :span="5">
-							<el-select v-model="info.provinceNo" placeholder="省" @change="provinceTab">
+							<el-select v-model="provinceNoText" placeholder="省" @change="provinceTab">
 								<el-option v-for="item in provinceNoData" :key="item.code" :label="item.name"
 									:value="item.code">
 								</el-option>
 							</el-select>
 						</el-col>
 						<el-col :span="5" class="mar-10">
-							<el-select v-model="info.cityNo" placeholder="市" @change="cityTab">
+							<el-select v-model="cityNoText" placeholder="市" @change="cityTab">
 								<el-option v-for="item in cityNoData" :key="item.code" :label="item.name"
 									:value="item.code">
 								</el-option>
 							</el-select>
 						</el-col>
 						<el-col :span="5" class="mar-10">
-							<el-select v-if="areaNoData" v-model="info.areaNo" placeholder="区">
+							<el-select v-if="areaNoText" v-model="info.areaNo" placeholder="区" @change="areaNoTab">
 								<el-option v-for="item in areaNoData" :key="item.code" :label="item.name"
 									:value="item.code">
 								</el-option>
@@ -96,9 +96,12 @@
 		name: "personalData",
 		data() {
 			return {
-				provinceNoData: [],
-				cityNoData: [],
+				provinceNoData: '',
+				cityNoData: '',
 				areaNoData: '',
+				provinceNoText: '',
+				cityNoText: '',
+				areaNoText: '',
 				info: {},
 			}
 		},
@@ -111,7 +114,13 @@
 				var res = await getUserInfoApi();
 				if (res.data.status == 1) {
 					this.info = res.data.data[0]
+					this.provinceNoText = this.info.provinceNo
+					this.cityNoText = this.info.cityNo
+					this.areaNoText = this.info.areaNo
 				}
+				this.provinceTab(this.provinceNoText)
+				this.cityTab(this.cityNoText)
+				this.areaNoTab(this.areaNoText)
 			},
 			provinceTab(val) {
 				this.info.cityNo = ''
@@ -119,16 +128,23 @@
 				this.provinceNoData.forEach(el => {
 					if (el.code == val) {
 						this.cityNoData = el.children
+						this.info.provinceNo = val
 					}
 				})
+
 			},
 			cityTab(val) {
 				this.info.areaNo = ''
 				this.cityNoData.forEach(el => {
 					if (el.code == val) {
 						this.areaNoData = el.children
+						this.info.cityNo = val
 					}
 				})
+				this.areaNoTab()
+			},
+			areaNoTab(val) {
+				this.info.areaNo = val
 			},
 			async updateInfo() {
 				if (this.panduan().de) {
@@ -156,6 +172,7 @@
 					})
 					if (res.data.status == 1) {
 						alert('修改成功')
+						this.updeyInfo()
 					}
 				} else {
 					this.$message({
