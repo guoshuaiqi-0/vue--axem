@@ -103,3 +103,11 @@ export function getQuestionUpdateApi(params = {}) {
 export function getUserInfoApi(params = {}) {
 	return axios.post('/user/info', params, getConfig())
 }
+/**
+ * 	修改个人信息接口
+ * @param { } params 
+ */
+
+export function getUserInfoUpdateApi(params = {}) {
+	return axios.post('/user/update', params, getConfig())
+}
