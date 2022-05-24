@@ -56,14 +56,22 @@ body {
     margin-top: 10px !important;
 }
 .mr-20{
-    margin-top: 20px;
+    margin-top: 20px !important;
 }
 .mr-30{
     margin-top: 30px;
 }
+.mrr-10{
+    margin-right: 10px;
+}
 .mrr-20{
     margin-right: 20px;
 }
+.mrr-50{
+    margin-right: 50px;
+}
+
+
 
 .radio-mr5{
     margin: 5px;
@@ -86,3 +94,6 @@ body {
     cursor: pointer;
 }
 
+.par-20px{
+	padding: 20px;
+}

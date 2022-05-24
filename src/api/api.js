@@ -111,3 +111,13 @@ export function getUserInfoApi(params = {}) {
 export function getUserInfoUpdateApi(params = {}) {
 	return axios.post('/user/update', params, getConfig())
 }
+
+
+/**
+ * 	查询我的记事薄列表
+ * @param { } params 
+ */
+
+export function getDiaryListApi(params = {}) {
+	return axios.post('/diary/list', params, getConfig())
+}
