@@ -43,6 +43,24 @@ const routes = [{
 			// this generates a separate chunk (about.[hash].js) for this route
 			// which is lazy-loaded when the route is visited.
 			component: () => import( /* webpackChunkName: "about" */ '../views/CreateTask.vue')
+		}, {
+			path: '/taskList',
+			name: 'taskList',
+			// route level code-splitting
+			// this generates a separate chunk (about.[hash].js) for this route
+			// which is lazy-loaded when the route is visited.
+			component: () => import( /* webpackChunkName: "about" */ '../views/TaskList.vue')
+		}, {
+			path: '/roleManagement',
+			name: 'roleManagement',
+			// route level code-splitting
+			// this generates a separate chunk (about.[hash].js) for this route
+			// which is lazy-loaded when the route is visited.
+			component: () => import( /* webpackChunkName: "about" */ '../views/RoleManagement.vue')
+		}, {
+			path: '/taskDetails',
+			name: 'taskDetails',
+			component: () => import( /* webpackChunkName: "about" */ '../views/TaskDetails.vue')
 		}]
 	},
 	{
@@ -57,7 +75,8 @@ const routes = [{
 		path: '/register',
 		name: 'register',
 		component: () => import( /* webpackChunkName: "about" */ '../views/RegisterView.vue')
-	}
+	},
+
 ]
 
 const router = new VueRouter({

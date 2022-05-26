@@ -121,3 +121,41 @@ export function getUserInfoUpdateApi(params = {}) {
 export function getDiaryListApi(params = {}) {
 	return axios.post('/diary/list', params, getConfig())
 }
+
+/**
+ * 	创建任务
+ * @param { } params 
+ */
+
+export function creatTask(params = {}) {
+	return axios.post('/task/create', params, getConfig())
+}
+
+/**
+ * 	发布任务
+ * @param { } params 
+ */
+
+export function releaseTaskApi(params = {}) {
+	return axios.post('/task/release', params, getConfig())
+}
+
+
+/**
+ * 	查询用户信息列表
+ * @param { } params 
+ */
+
+export function getUserList(params = {}) {
+	return axios.post('/user/list', params, getConfig())
+}
+
+
+/**
+ * 	发布任务
+ * @param { } params 
+ */
+
+export function getListTaskApi(params = {}) {
+	return axios.post('/task/list', params, getConfig())
+}

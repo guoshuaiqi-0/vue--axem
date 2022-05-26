@@ -44,6 +44,8 @@
 							<el-menu-item index="2-3">修改密码</el-menu-item>
 							<el-menu-item index="2-4">账号绑定</el-menu-item>
 							<el-menu-item index="2-5" @click="hand('calendarInterface')">日历</el-menu-item>
+							<el-menu-item index="2-6" @click="hand('roleManagement')">角色管理</el-menu-item>
+							<el-menu-item index="2-7" @click="hand()">新增角色</el-menu-item>
 						</el-submenu>
 						<el-submenu index="3">
 							<template slot="title">
@@ -51,7 +53,16 @@
 								<span>任务中心</span>
 							</template>
 							<el-menu-item index="3-1" @click="hand('createTask')">创建任务</el-menu-item>
+							<el-menu-item index="3-2" @click="hand('taskList')">任务列表</el-menu-item>
 						</el-submenu>
+						<!-- <el-submenu index="4">
+							<template slot="title">
+								<i class="el-icon-location"></i>
+								<span>角色管理</span>
+							</template>
+							<el-menu-item index="4-1" @click="hand('createTask')">创建任务</el-menu-item>
+							<el-menu-item index="4-2" @click="hand('taskList')">任务列表</el-menu-item>
+						</el-submenu> -->
 					</el-menu>
 				</el-aside>
 				<el-main>

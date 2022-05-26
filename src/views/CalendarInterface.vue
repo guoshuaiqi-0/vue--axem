@@ -118,11 +118,14 @@
 				var currentDate = new Date()
 				var beforeDate = new Date(val)
 				if (currentDate.getHours() - beforeDate.getHours() >= 1) {
-					return currentDate.getHours() - beforeDate.getHours() + '小时之前'
+					return currentDate.getHours() - beforeDate.getHours() + '小时之前' + beforeDate.getHours() + ':' +
+						beforeDate.getMinutes()
 				} else if (currentDate.getMinutes() - beforeDate.getMinutes() >= 1) {
-					return currentDate.getMinutes() - beforeDate.getMinutes() + '分钟前'
+					return currentDate.getMinutes() - beforeDate.getMinutes() + '分钟前' + beforeDate.getHours() + ':' +
+						beforeDate.getMinutes()
 				} else {
-					return '刚刚'
+					return '刚刚' + beforeDate.getHours() + ':' +
+						beforeDate.getMinutes()
 				}
 			},
 			sendSocketMsg() {
