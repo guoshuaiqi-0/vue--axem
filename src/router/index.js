@@ -14,53 +14,61 @@ const routes = [{
 			// route level code-splitting
 			// this generates a separate chunk (about.[hash].js) for this route
 			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ '../views/QuestionBank.vue')
+			component: () => import( /* webpackChunkName: "about" */
+				'../views/question/QuestionBank')
 		}, {
 			path: '/JSquestionBank',
 			name: 'JSquestionBank',
 			// route level code-splitting
 			// this generates a separate chunk (about.[hash].js) for this route
 			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ '../views/JSQuestionBank.vue')
+			component: () => import( /* webpackChunkName: "about" */ '../views/question/JSQuestionBank.vue')
 		}, {
 			path: '/personalData',
 			name: 'personalData',
 			// route level code-splitting
 			// this generates a separate chunk (about.[hash].js) for this route
 			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ '../views/PersonalData.vue')
+			component: () => import( /* webpackChunkName: "about" */
+				'../views/account_settings/PersonalData.vue')
 		}, {
 			path: '/calendarInterface',
 			name: 'calendarInterface',
 			// route level code-splitting
 			// this generates a separate chunk (about.[hash].js) for this route
 			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ '../views/CalendarInterface.vue')
+			component: () => import( /* webpackChunkName: "about" */
+				'../views/account_settings/CalendarInterface.vue')
 		}, {
 			path: '/createTask',
 			name: 'createTask',
 			// route level code-splitting
 			// this generates a separate chunk (about.[hash].js) for this route
 			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ '../views/CreateTask.vue')
+			component: () => import( /* webpackChunkName: "about" */ '../views/task/CreateTask.vue')
 		}, {
 			path: '/taskList',
 			name: 'taskList',
 			// route level code-splitting
 			// this generates a separate chunk (about.[hash].js) for this route
 			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ '../views/TaskList.vue')
+			component: () => import( /* webpackChunkName: "about" */ '../views/task/TaskList.vue')
 		}, {
 			path: '/roleManagement',
 			name: 'roleManagement',
 			// route level code-splitting
 			// this generates a separate chunk (about.[hash].js) for this route
 			// which is lazy-loaded when the route is visited.
-			component: () => import( /* webpackChunkName: "about" */ '../views/RoleManagement.vue')
+			component: () => import( /* webpackChunkName: "about" */
+				'../views/account_settings/RoleManagement.vue')
 		}, {
 			path: '/taskDetails',
 			name: 'taskDetails',
-			component: () => import( /* webpackChunkName: "about" */ '../views/TaskDetails.vue')
+			component: () => import( /* webpackChunkName: "about" */ '../views/task/TaskDetails.vue')
+		}, {
+			path: '/newRole',
+			name: 'newRole',
+			component: () => import( /* webpackChunkName: "about" */ '../views/account_settings/NewRole.vue')
 		}]
 	},
 	{

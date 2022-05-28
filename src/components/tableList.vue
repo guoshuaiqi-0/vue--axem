@@ -113,33 +113,30 @@
 		}
 	}
 
-	.functionalAuthority {
-		padding-left: 20px;
+	.header {
+		padding: 25px 0;
+		border: none;
+		font-size: 16px;
 
-		& .header {
-			padding: 25px 0;
-			border: none;
-			font-size: 16px;
+		& .header_span {
+			color: #aaaaaa;
+		}
+	}
 
-			& .header_span {
-				color: #aaaaaa;
+	.table {
+		background-color: #fafbfc;
+		display: flex;
+		flex-direction: column;
+		color: black;
+
+		& .right {
+			padding: 20px 0;
+
+			& .item {
+				padding: 15px 10px;
+				box-sizing: border-box;
 			}
 		}
 
-		.table {
-			background-color: #fafbfc;
-			display: flex;
-			flex-direction: column;
-			color: black;
-
-			& .right {
-				padding: 20px 0;
-
-				& .item {
-					padding: 15px 10px;
-					box-sizing: border-box;
-				}
-			}
-		}
 	}
 </style>

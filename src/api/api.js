@@ -127,7 +127,7 @@ export function getDiaryListApi(params = {}) {
  * @param { } params 
  */
 
-export function creatTask(params = {}) {
+export function creatTaskApi(params = {}) {
 	return axios.post('/task/create', params, getConfig())
 }
 
@@ -152,10 +152,19 @@ export function getUserList(params = {}) {
 
 
 /**
- * 	发布任务
+ * 	查询任务列表
  * @param { } params 
  */
 
 export function getListTaskApi(params = {}) {
 	return axios.post('/task/list', params, getConfig())
+}
+
+/**
+ * 	获取任务详情
+ * @param { } params 
+ */
+
+export function getDetailTaskApi(params = {}) {
+	return axios.post('/task/detail', params, getConfig())
 }

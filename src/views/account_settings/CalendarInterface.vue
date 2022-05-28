@@ -231,7 +231,7 @@
 					border-radius: 20px;
 					display: grid;
 					grid-template-columns: 70px auto;
-					background-image: url(../assets/circular.jpg);
+					background-image: url(../../assets/circular.jpg);
 					background-repeat: no-repeat;
 					background-position: 100% 100%;
 					background-size: 20%;

@@ -55,7 +55,7 @@
 
 <script>
 	// @ is an alias to /src
-	import tableList from '../components/tableList.vue'
+	import tableList from '../../components/tableList.vue'
 
 	export default {
 		name: "roleManagement",
@@ -131,6 +131,9 @@
 					}
 				}
 
+				.functionalAuthority {
+					padding: 20px;
+				}
 
 				// 功能权限
 

@@ -45,7 +45,7 @@
 							<el-menu-item index="2-4">账号绑定</el-menu-item>
 							<el-menu-item index="2-5" @click="hand('calendarInterface')">日历</el-menu-item>
 							<el-menu-item index="2-6" @click="hand('roleManagement')">角色管理</el-menu-item>
-							<el-menu-item index="2-7" @click="hand()">新增角色</el-menu-item>
+							<el-menu-item index="2-7" @click="hand('newRole')">新增角色</el-menu-item>
 						</el-submenu>
 						<el-submenu index="3">
 							<template slot="title">
@@ -117,6 +117,15 @@
 </script>
 
 <style lang="scss" scoped>
+	::v-deep .el-menu-vertical-demo {
+		width: 100%;
+	}
+
+	::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+	}
+
 	.header {
 		background-color: #3a84f1;
 		font-size: 20px;

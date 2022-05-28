@@ -26,17 +26,16 @@
 				<el-button type="primary" @click="onSubmit('params')">立即创建</el-button>
 			</el-form-item>
 		</el-form>
-
 	</div>
 </template>
 
 <script>
 	// @ is an alias to /src
 	import {
-		creatTask,
+		creatTaskApi,
 		getUserList,
 		releaseTaskApi
-	} from '../api/api.js'
+	} from '../../api/api.js'
 
 	export default {
 		name: "createTask",
@@ -87,11 +86,12 @@
 					duration: Number(this.params.duration), //任务时长,
 					level: this.params.level == true ? 1 : 0
 				}
-				var res = await creatTask(params)
+				var res = await creatTaskApi(params)
 				if (res.data.status == 1) {
 					this.taskRelease(res.data.data[0])
 				}
 			},
+			// 获取用户信息列表
 			async getListUser() {
 				var res = await getUserList({
 					pagination: false
