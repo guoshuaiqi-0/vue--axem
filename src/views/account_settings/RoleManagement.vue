@@ -11,17 +11,15 @@
 					<div class="newGroup flex-centen mar-30"><span class="el-icon-user"></span>新建分组</div>
 				</div>
 				<div class="conter">
-					<el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+					<el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
 						text-color="#666666" active-text-color="#6cd6bf">
-						<el-submenu index="1">
+						<el-submenu :index="item.id+''" v-for="(item,index) in list" :key="index">
 							<template slot="title">
 								<i class="el-icon-location"></i>
-								<span>默认</span>
+								<span>{{ item.groupName }}</span>
 							</template>
-							<el-menu-item index="1-1">所有者</el-menu-item>
-							<el-menu-item index="1-2">管理员</el-menu-item>
-							<el-menu-item index="1-3">部门主管</el-menu-item>
-							<el-menu-item index="1-4">成员</el-menu-item>
+							<el-menu-item v-for="(menu_item,index) in item.renyuan" :index="menu_item.id+''"
+								:key="index">{{ menu_item.roleName }}</el-menu-item>
 						</el-submenu>
 					</el-menu>
 				</div>
@@ -56,7 +54,10 @@
 <script>
 	// @ is an alias to /src
 	import tableList from '../../components/tableList.vue'
-
+	import {
+		getRoleGroupListApi,
+		getRoleListApi
+	} from '../../api/api.js'
 	export default {
 		name: "roleManagement",
 		components: {
@@ -65,7 +66,16 @@
 		data() {
 			return {
 				activeIndex: '2',
+				// 列表内容
+				list: [],
+				// 组的列表
+				zuList: [],
+				// 人员的列表
+				perporList: []
 			}
+		},
+		created() {
+			this.roleGroupList();
 		},
 		methods: {
 			handleOpen(key, keyPath) {
@@ -76,6 +86,40 @@
 			},
 			handleSelect(key) {
 				this.activeIndex = key
+			},
+			// 角色分组列表
+			async roleGroupList() {
+				var res = await getRoleGroupListApi({
+					pagination: false
+				})
+				if (res.data.status == 1) {
+					this.zuList = res.data.data.rows
+					this.roleList()
+				}
+			},
+			// 角色列表
+			async roleList() {
+				var res = await getRoleListApi({
+					pagination: false
+				})
+				if (res.data.status == 1) {
+					this.perporList = res.data.data.rows
+					this.chuliList()
+				}
+			},
+			// 处理列表数据
+			chuliList() {
+				this.zuList.forEach(item => {
+					var renyuan = this.perporList.filter((per_item) => {
+						if (per_item.groupId == item.id) return per_item
+					})
+					this.list.push({
+						id: item.id, //分组id
+						groupName: item.groupName, // 分组的名字
+						renyuan: renyuan
+					})
+				})
+				console.log(this.list)
 			}
 		}
 	};
@@ -85,8 +129,6 @@
 	h1 {
 		margin: 0;
 	}
-
-
 
 	.roleManagement {
 		height: 100%;

@@ -168,3 +168,21 @@ export function getListTaskApi(params = {}) {
 export function getDetailTaskApi(params = {}) {
 	return axios.post('/task/detail', params, getConfig())
 }
+
+/**
+ * 	获取角色分组列表
+ * @param { } params 
+ */
+
+export function getRoleGroupListApi(params = {}) {
+	return axios.post('/roleGroup/list', params, getConfig())
+}
+
+/**
+ * 	获取角色列表
+ * @param { } params 
+ */
+
+export function getRoleListApi(params = {}) {
+	return axios.post('/role/list', params, getConfig())
+}
