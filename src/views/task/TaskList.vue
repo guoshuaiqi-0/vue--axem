@@ -61,17 +61,8 @@
 			<el-button type="primary" @click="release()">发布</el-button>
 		</el-dialog>
 		<!-- 编辑任务的抽屉 -->
-		<el-drawer title="我是标题" :visible.sync="drawer" :userList="userList" :direction="direction" :before-close="handleClose" size="50%">
-			<taskEditor ref="task" :userList="userList" :taskInfo="params">
-				<template v-slot:btn>
-					<el-button type="primary" @click="modify">修改</el-button>
-				</template>
-				<template v-slot:select>
-					<el-select v-model="list" multiple placeholder="请选择">
-						<el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-					</el-select>
-				</template>
-			</taskEditor>
+		<el-drawer title="我是标题" :visible.sync="drawer"  :direction="direction" :before-close="handleClose" size="50%">
+			<taskEditor ref="task" :userList="userList" btnName="修改" :taskInfo="params" @my-modify="modify"></taskEditor>
 		</el-drawer>
 	</div>
 </template>
@@ -281,7 +272,7 @@
 						message: '编辑程功!'
 					});
 					this.drawer = false;
-let data = await releaseTaskApi({userIds:this.list,taskId:params.id,});if(data.data.status==1){this.$message({type: 'success',message: '发布任务成功!'});this.taskList(this.fenye);this.list= [];}this.taskList(this.fenye);
+let data = await releaseTaskApi({userIds:this.$refs.task.list,taskId:params.id,});if(data.data.status==1){this.$message({type: 'success',message: '发布任务成功!'});this.taskList(this.fenye);this.$refs.task.list= [];}this.taskList(this.fenye);
 				}
 			},
 			modify() {

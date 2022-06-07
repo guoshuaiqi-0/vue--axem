@@ -1,15 +1,6 @@
 <template>
 	<div class="createTask">
-		<taskEditor ref="task" :userList="userList">
-			<template v-slot:select>
-			<el-select v-model="list" multiple placeholder="请选择">
-				<el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-			</el-select>
-			</template>
-			<template v-slot:btn>
-				<el-button type="primary" @click="onSubmit()">立即创建</el-button>
-			</template>
-		</taskEditor>
+		<taskEditor ref="task" :userList="userList" btnName="立即创建" @my-modify="onSubmit"></taskEditor>
 	</div>
 </template>
 
@@ -62,7 +53,7 @@
 				}
 			},
 			async taskRelease(taskId) {
-				let userIdArr = this.list;
+				let userIdArr = this.$refs.task.list;
 				var res = await releaseTaskApi({
 					userIds:userIdArr,
 					taskId,
