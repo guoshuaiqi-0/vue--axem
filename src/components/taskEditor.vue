@@ -45,5 +45,10 @@ export default {
       list: [],
     };
   },
+  watch:{
+      taskInfo:function(val){
+        this.params = val;
+      }
+    }
 };
 </script>
