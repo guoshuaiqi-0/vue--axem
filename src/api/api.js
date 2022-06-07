@@ -161,6 +161,13 @@ export function getListTaskApi(params = {}) {
 }
 
 /**
+ * 更改任务
+ * @param {*} params 
+ */
+	export function updateTaskApi(params = {}) {
+		return axios.post('/task/update', params, getConfig())
+	}
+/**
  * 	获取任务详情
  * @param { } params 
  */

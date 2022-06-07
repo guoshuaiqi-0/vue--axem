@@ -7,16 +7,17 @@ import './common.scss'
 import ElementUI from 'element-ui'
 import './styles.scss'
 import VueSocketIO from 'vue-socket.io'
-
+import GlobalComponent from '@/assets/utils/global';
 Vue.use(ElementUI)
-
+Vue.use(GlobalComponent);
 Vue.config.productionTip = false
 
 Vue.use(new VueSocketIO({
 	debug: true,
 	// connection: 'http://8.131.89.181:7001', //这个地址是服务端地址
-	connection: 'http://192.168.0.120:7001',
-	// connection: 'http://192.168.0.120:7001'
+	// connection: 'http://192.168.0.120:7001',
+	connection: 'http://192.168.0.104:7001',
+	// connection: 'http://192.168.0.120:7001',
 }))
 
 

@@ -55,14 +55,6 @@
 							<el-menu-item index="3-1" @click="hand('createTask')">创建任务</el-menu-item>
 							<el-menu-item index="3-2" @click="hand('taskList')">任务列表</el-menu-item>
 						</el-submenu>
-						<!-- <el-submenu index="4">
-							<template slot="title">
-								<i class="el-icon-location"></i>
-								<span>角色管理</span>
-							</template>
-							<el-menu-item index="4-1" @click="hand('createTask')">创建任务</el-menu-item>
-							<el-menu-item index="4-2" @click="hand('taskList')">任务列表</el-menu-item>
-						</el-submenu> -->
 					</el-menu>
 				</el-aside>
 				<el-main>
@@ -105,10 +97,9 @@
 			async infor() {
 				var res = await getInfoApi()
 				if (res.data.status == 1) {
-					this.phone = res.data.data[0].phone
+					this.phone = res.data.data.phone
 				} else if (res.data.status == 401) {
 					this.hand('about')
-
 				}
 
 			}

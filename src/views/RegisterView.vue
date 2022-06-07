@@ -15,6 +15,9 @@
                         <el-button>获取验证码</el-button>
                     </div> -->
                     <el-form :label-position="labelPosition" :rules="rules" label-width="20px" :model="formLabelAlign" status-icon ref="formLabelAlign">
+                        <el-form-item label=" " prop="name">
+                            <el-input placeholder="请输入真实姓名" prefix-icon="el-icon-user" v-model="formLabelAlign.name"></el-input>
+                        </el-form-item>
                         <el-form-item label=" " prop="username">
                             <el-input placeholder="请输入用户名" prefix-icon="el-icon-user" v-model="formLabelAlign.username"></el-input>
                         </el-form-item>
@@ -109,7 +112,8 @@ export default {
                 confirmPass: '',
                 email: '',
                 captcha: '',
-                phone: ''
+                phone: '',
+                name:'',
             },
             rules: {
                 username: [{
@@ -169,6 +173,11 @@ export default {
                     required: true,
                     message: '请输入验证码',
                     trigger: 'blur'
+                }],
+                name:[{
+                    required: true,
+                    message: '请输入真实姓名',
+                    trigger: 'blur'
                 }]
 
             }
@@ -183,10 +192,12 @@ export default {
                 }
                 var res = await postRegisterApi({payload:{
                     username: this.formLabelAlign.username,
+                    name: this.formLabelAlign.name,
                     password: this.formLabelAlign.password,
                     email: this.formLabelAlign.email,
                     phone: this.formLabelAlign.phone,
                     captcha: this.formLabelAlign.captcha,
+
                 }})
                 if (res.data.status == 1) {
                     this.$message({

@@ -51,7 +51,6 @@
 			layout="total, sizes, prev, pager, next, jumper" :total="count">
 		</el-pagination>
 
-
 		<!-- 发布任务弹层 -->
 		<el-dialog title="提示" :visible.sync="dialogVisible">
 			<el-cascader :options="userList" :props="props" v-model="receivedData">
@@ -62,28 +61,18 @@
 			<el-button type="primary" @click="release()">发布</el-button>
 		</el-dialog>
 		<!-- 编辑任务的抽屉 -->
-		<el-drawer title="我是标题" :visible.sync="drawer" :direction="direction" :before-close="handleClose" size="50%">
-			<el-form ref="params" :model="params" label-width="80px">
-				<el-form-item label="任务名称">
-					<el-input v-model="params.taskName"></el-input>
-				</el-form-item>
-				<el-form-item label="任务时长">
-					<el-input placeholder="请输入内容" v-model="params.duration">
-						<template slot="append">小时</template>
-					</el-input>
-				</el-form-item>
-				<el-form-item label="任务描述">
-					<el-input type="textarea" v-model="params.desc" :rows="5"></el-input>
-				</el-form-item>
-				<el-form-item label="是否紧急">
-					<el-switch v-model="params.level"></el-switch>
-				</el-form-item>
-				<el-form-item>
+		<el-drawer title="我是标题" :visible.sync="drawer" :userList="userList" :direction="direction" :before-close="handleClose" size="50%">
+			<taskEditor ref="task" :userList="userList" :taskInfo="params">
+				<template v-slot:btn>
 					<el-button type="primary" @click="modify">修改</el-button>
-				</el-form-item>
-			</el-form>
+				</template>
+				<template v-slot:select>
+					<el-select v-model="list" multiple placeholder="请选择">
+						<el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+					</el-select>
+				</template>
+			</taskEditor>
 		</el-drawer>
-
 	</div>
 </template>
 
@@ -95,7 +84,8 @@
 		getUserInfoApi,
 		releaseTaskApi,
 		getDetailTaskApi,
-		creatTaskApi
+		creatTaskApi,
+		updateTaskApi,
 	} from '../../api/api.js'
 
 	import hand from '../../mixins/hand.js'
@@ -126,7 +116,8 @@
 				// 编辑任务的抽屉
 				drawer: false,
 				direction: 'ltr',
-				params: {} //任务信息
+				params: {}, //任务信息
+				list:[],
 			}
 		},
 		created() {
@@ -145,8 +136,8 @@
 			async getuser() {
 				var res = await getUserInfoApi()
 				if (res.data.status == 1) {
-					this.myid = res.data.data[0].id
-					this.taskList(this.fenye)
+					this.myid = res.data.data.id
+					this.taskList(this.fenye);
 				}
 			},
 			// 获取任务信息列表
@@ -155,30 +146,55 @@
 				if (res.data.status == 1) {
 					this.tableData = res.data.data.rows
 					this.count = res.data.data.count
-					console.log(res.data.data)
 					this.params = res.data.data
 				}
 			},
 			// 获取任务详情
-			async detailTask(params) {
-				var res = await getDetailTaskApi(params)
-				if (res.data.status == 1) {
-					this.taskId = res.data.data.taskId
-					res.data.data.receivedData.forEach(item => {
-						this.receivedData.push(item.userId)
+			async detailTask(taskId) {
+				return await getDetailTaskApi({taskId});
+				// if (res.data.status == 1) {
+				// 	this.taskId = res.data.data.taskId
+				// 	res.data.data.receivedData.forEach(item => {
+				// 		this.receivedData.push(item.userId)
+				// 	})
+				// 	this.getListUser()
+				// }
+			},
+			//获取未领取当前任务的人;
+			userArr(){
+                this.userList = [];
+				Promise.all([this.detailTask(this.params.id),this.getListUser()]).then(res=>{
+					let [detailArr,userArr] =  res;
+					let tempArr = [];//存放id
+					let targetArr=[];//存放要加的用户
+					let allUser = userArr.data.data.data.rows;
+					let taskUser= detailArr.data.data.receivedData;
+					taskUser.forEach(item => {
+						tempArr.push(item.userId);
+					});
+					allUser.forEach(item=>{
+						if(!tempArr.includes(item.id)){
+							targetArr.push(item);
+						}
 					})
-					this.getListUser()
-				}
+					this.userList = targetArr;
+					// console.log(targetArr);
+					// console.log(allUser);
+					// console.log(taskUser);
+					// console.log(tempArr);
+					// console.log(detailArr.data.data.receivedData);
+					// console.log(userArr.data.data.data.rows);
+				})
 			},
 			// 获取用户信息列表
 			async getListUser() {
-				var res = await getUserList({
+				return await getUserList({
 					pagination: false
 				})
-				if (res.data.status == 1) {
-					this.userList = res.data.data.data.rows
-					this.dialogVisible = true
-				}
+				// if (res.data.status == 1) {
+				// 	this.userList = res.data.data.data.rows
+				// 	this.dialogVisible = true
+				// }
 			},
 			// 分页
 			handleSizeChange(val) {
@@ -195,9 +211,10 @@
 					type: 'warning'
 				}).then(async () => {
 					const params = {
-						userId: [this.myid], //用户id，  如果给多个人发送任务，可以传数组，数组中是每一个人的id； 
+						userIds: [this.myid], //用户id，  如果给多个人发送任务，可以传数组，数组中是每一个人的id； 
 						taskId: key.id, //任务id   
 					}
+                    // console.log(params);
 					var res = await releaseTaskApi(params)
 					if (res.data.status == 1) {
 						this.$message({
@@ -205,7 +222,12 @@
 							message: '领取成功!'
 						});
 						this.taskList(this.fenye)
-					}
+					}else{
+                        this.$message({
+							type: 'success',
+							message: '领取失败!'
+						});
+                    }
 				}).catch(() => {
 					this.$message({
 						type: 'info',
@@ -223,7 +245,7 @@
 			//发布任务单层确认按钮
 			async release() {
 				const params = {
-					userId: this.receivedData, //用户id，  如果给多个人发送任务，可以传数组，数组中是每一个人的id； 
+					userIds: this.receivedData, //用户id，  如果给多个人发送任务，可以传数组，数组中是每一个人的id； 
 					taskId: this.taskId, //任务id   
 				}
 				var res = await releaseTaskApi(params)
@@ -234,8 +256,10 @@
 			},
 			// 编辑任务按钮
 			edit(key) {
-				this.drawer = true
-				this.params = key
+				this.drawer = true;
+				this.params = key;
+				this.params.name = key.taskName;
+				this.userArr(this.params.id);
 			},
 			// 创建任务接口
 			async creatTask(params) {
@@ -248,14 +272,28 @@
 					this.drawer = false
 				}
 			},
+			//更改任务接口
+			async updateTask(params){
+				var res = await updateTaskApi(params);
+				if(res.data.status==1){
+					this.$message({
+						type: 'success',
+						message: '编辑程功!'
+					});
+					this.drawer = false;
+let data = await releaseTaskApi({userIds:this.list,taskId:params.id,});if(data.data.status==1){this.$message({type: 'success',message: '发布任务成功!'});this.taskList(this.fenye);this.list= [];}this.taskList(this.fenye);
+				}
+			},
 			modify() {
+				this.params = this.$refs.task.params;
 				const params = {
-					name: this.params.taskName, //任务名称
+					id:this.params.id,//任务id
+					name: this.params.name, //任务名称
 					desc: this.params.desc, //任务描述
 					duration: this.params.duration, //任务时长
 					level: this.params.level ? 1 : 0, // 任务等级  1：紧急  0：普通任务
 				}
-				this.creatTask(params)
+				this.updateTask(params)
 			}
 		},
 		watch: {
