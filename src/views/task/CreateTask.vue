@@ -6,7 +6,6 @@
 </template>
 
 <script>
-	// @ is an alias to /src
 	import {
 		creatTaskApi,
 		getUserList,
@@ -35,7 +34,8 @@
 					pagination: false
 				})
 				if (res.data.status == 1) {
-					this.userList = res.data.data.data.rows
+					this.userList = res.data.data.data.rows;
+					console.log(this.userList);
 				}
 			},
 			// 创建任务接口

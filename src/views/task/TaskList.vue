@@ -51,7 +51,6 @@
 			layout="total, sizes, prev, pager, next, jumper" :total="count">
 		</el-pagination>
 
-
 		<!-- 发布任务弹层 -->
 		<el-dialog title="提示" :visible.sync="dialogVisible">
 			<el-cascader :options="userList" :props="props" v-model="receivedData">
@@ -142,25 +141,51 @@
 				}
 			},
 			// 获取任务详情
-			async detailTask(params) {
-				var res = await getDetailTaskApi(params)
-				if (res.data.status == 1) {
-					this.taskId = res.data.data.taskId
-					res.data.data.receivedData.forEach(item => {
-						this.receivedData.push(item.userId)
+			async detailTask(taskId) {
+				return await getDetailTaskApi({taskId});
+				// if (res.data.status == 1) {
+				// 	this.taskId = res.data.data.taskId
+				// 	res.data.data.receivedData.forEach(item => {
+				// 		this.receivedData.push(item.userId)
+				// 	})
+				// 	this.getListUser()
+				// }
+			},
+			//获取未领取当前任务的人;
+			userArr(){
+                this.userList = [];
+				Promise.all([this.detailTask(this.params.id),this.getListUser()]).then(res=>{
+					let [detailArr,userArr] =  res;
+					let tempArr = [];//存放id
+					let targetArr=[];//存放要加的用户
+					let allUser = userArr.data.data.data.rows;
+					let taskUser= detailArr.data.data.receivedData;
+					taskUser.forEach(item => {
+						tempArr.push(item.userId);
+					});
+					allUser.forEach(item=>{
+						if(!tempArr.includes(item.id)){
+							targetArr.push(item);
+						}
 					})
-					this.getListUser()
-				}
+					this.userList = targetArr;
+					// console.log(targetArr);
+					// console.log(allUser);
+					// console.log(taskUser);
+					// console.log(tempArr);
+					// console.log(detailArr.data.data.receivedData);
+					// console.log(userArr.data.data.data.rows);
+				})
 			},
 			// 获取用户信息列表
 			async getListUser() {
-				var res = await getUserList({
+				return await getUserList({
 					pagination: false
 				})
-				if (res.data.status == 1) {
-					this.userList = res.data.data.data.rows
-					this.dialogVisible = true
-				}
+				// if (res.data.status == 1) {
+				// 	this.userList = res.data.data.data.rows
+				// 	this.dialogVisible = true
+				// }
 			},
 			// 分页
 			handleSizeChange(val) {
@@ -177,9 +202,10 @@
 					type: 'warning'
 				}).then(async () => {
 					const params = {
-						userId: [this.myid], //用户id，  如果给多个人发送任务，可以传数组，数组中是每一个人的id； 
+						userIds: [this.myid], //用户id，  如果给多个人发送任务，可以传数组，数组中是每一个人的id； 
 						taskId: key.id, //任务id   
 					}
+                    // console.log(params);
 					var res = await releaseTaskApi(params)
 					if (res.data.status == 1) {
 						this.$message({
@@ -187,7 +213,12 @@
 							message: '领取成功!'
 						});
 						this.taskList(this.fenye)
-					}
+					}else{
+                        this.$message({
+							type: 'success',
+							message: '领取失败!'
+						});
+                    }
 				}).catch(() => {
 					this.$message({
 						type: 'info',
@@ -205,7 +236,7 @@
 			//发布任务单层确认按钮
 			async release() {
 				const params = {
-					userId: this.receivedData, //用户id，  如果给多个人发送任务，可以传数组，数组中是每一个人的id； 
+					userIds: this.receivedData, //用户id，  如果给多个人发送任务，可以传数组，数组中是每一个人的id； 
 					taskId: this.taskId, //任务id   
 				}
 				var res = await releaseTaskApi(params)

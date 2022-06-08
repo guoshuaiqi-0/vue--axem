@@ -7,9 +7,9 @@ import './common.scss'
 import ElementUI from 'element-ui'
 import './styles.scss'
 import VueSocketIO from 'vue-socket.io'
-
+import GlobalComponent from '@/assets/utils/global';
 Vue.use(ElementUI)
-
+Vue.use(GlobalComponent);
 Vue.config.productionTip = false
 
 Vue.use(new VueSocketIO({
