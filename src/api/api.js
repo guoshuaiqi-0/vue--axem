@@ -186,3 +186,13 @@ export function getRoleGroupListApi(params = {}) {
 export function getRoleListApi(params = {}) {
 	return axios.post('/role/list', params, getConfig())
 }
+
+
+/**
+ * 	创建角色
+ * @param { } params 
+ */
+
+export function getRoleCreateApi(params = {}) {
+	return axios.post('/role/create', params, getConfig())
+}

@@ -62,28 +62,9 @@
 			<el-button type="primary" @click="release()">发布</el-button>
 		</el-dialog>
 		<!-- 编辑任务的抽屉 -->
-		<el-drawer title="我是标题" :visible.sync="drawer" :direction="direction" :before-close="handleClose" size="50%">
-			<el-form ref="params" :model="params" label-width="80px">
-				<el-form-item label="任务名称">
-					<el-input v-model="params.taskName"></el-input>
-				</el-form-item>
-				<el-form-item label="任务时长">
-					<el-input placeholder="请输入内容" v-model="params.duration">
-						<template slot="append">小时</template>
-					</el-input>
-				</el-form-item>
-				<el-form-item label="任务描述">
-					<el-input type="textarea" v-model="params.desc" :rows="5"></el-input>
-				</el-form-item>
-				<el-form-item label="是否紧急">
-					<el-switch v-model="params.level"></el-switch>
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" @click="modify">修改</el-button>
-				</el-form-item>
-			</el-form>
-		</el-drawer>
-
+		<el-dialog title="编辑任务" :visible.sync="drawer" width="50%" :before-close="handleClose">
+			<CreateTaskItem ref="createTask" :taskInfo="params"></CreateTaskItem>
+		</el-dialog>
 	</div>
 </template>
 
@@ -95,14 +76,16 @@
 		getUserInfoApi,
 		releaseTaskApi,
 		getDetailTaskApi,
-		creatTaskApi
 	} from '../../api/api.js'
-
+	import CreateTaskItem from "@/components/CreateTaskItem.vue"
 	import hand from '../../mixins/hand.js'
 
 	export default {
 		name: "taskList",
 		mixins: [hand],
+		components: {
+			CreateTaskItem
+		},
 		data() {
 			return {
 				// props (发布任务弹层的自定义内容)
@@ -125,7 +108,6 @@
 				taskId: '',
 				// 编辑任务的抽屉
 				drawer: false,
-				direction: 'ltr',
 				params: {} //任务信息
 			}
 		},
@@ -145,7 +127,7 @@
 			async getuser() {
 				var res = await getUserInfoApi()
 				if (res.data.status == 1) {
-					this.myid = res.data.data[0].id
+					this.myid = res.data.data.id
 					this.taskList(this.fenye)
 				}
 			},
@@ -155,7 +137,7 @@
 				if (res.data.status == 1) {
 					this.tableData = res.data.data.rows
 					this.count = res.data.data.count
-					console.log(res.data.data)
+					// console.log(res.data.data)
 					this.params = res.data.data
 				}
 			},
@@ -236,27 +218,8 @@
 			edit(key) {
 				this.drawer = true
 				this.params = key
+				console.log(this.params)
 			},
-			// 创建任务接口
-			async creatTask(params) {
-				var res = await creatTaskApi(params)
-				if (res.data.status == 1) {
-					this.$message({
-						type: 'success',
-						message: '编辑程功!'
-					});
-					this.drawer = false
-				}
-			},
-			modify() {
-				const params = {
-					name: this.params.taskName, //任务名称
-					desc: this.params.desc, //任务描述
-					duration: this.params.duration, //任务时长
-					level: this.params.level ? 1 : 0, // 任务等级  1：紧急  0：普通任务
-				}
-				this.creatTask(params)
-			}
 		},
 		watch: {
 			tableData(newval) {

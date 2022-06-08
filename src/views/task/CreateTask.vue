@@ -1,31 +1,7 @@
 <template>
 	<div class="createTask">
-		<el-form ref="params" :model="params" label-width="80px">
-			<el-form-item label="任务名称">
-				<el-input v-model="params.name"></el-input>
-			</el-form-item>
-			<el-form-item label="任务时长">
-				<el-input placeholder="请输入内容" v-model="params.duration">
-					<template slot="append">小时</template>
-				</el-input>
-			</el-form-item>
-			<el-form-item label="任务描述">
-				<el-input type="textarea" v-model="params.desc" :rows="5"></el-input>
-			</el-form-item>
-			<el-form-item label="执行人">
-				<el-cascader :options="userList" :props="props" v-model="list">
-					<template slot-scope="{ data }">
-						<span>{{ data.name }}</span>
-					</template>
-				</el-cascader>
-			</el-form-item>
-			<el-form-item label="是否紧急">
-				<el-switch v-model="params.level"></el-switch>
-			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" @click="onSubmit('params')">立即创建</el-button>
-			</el-form-item>
-		</el-form>
+		<h1>创建任务</h1>
+		<CreateTaskItem ref="createTask" @creatTask="createTask" :userId="userList"></CreateTaskItem>
 	</div>
 </template>
 
@@ -37,60 +13,22 @@
 		releaseTaskApi
 	} from '../../api/api.js'
 
+	import CreateTaskItem from "@/components/CreateTaskItem.vue"
+
 	export default {
 		name: "createTask",
+		components: {
+			CreateTaskItem
+		},
 		data() {
 			return {
-				props: {
-					multiple: true,
-					value: 'id',
-					label: 'name'
-				},
-				params: {
-					name: '', //任务名称
-					desc: '', //任务描述
-					duration: '', //任务时长,
-					level: false,
-					region: ''
-				},
-				userList: [],
-				list: [],
-				publishUserList: [],
-				rules: {
-					taskName: [{
-						required: true,
-						message: "请输入内容",
-						trigger: 'blur'
-					}],
-				}
+				userList: []
 			}
 		},
 		created() {
 			this.getListUser()
 		},
 		methods: {
-			onSubmit(formName) {
-				this.$refs[formName].validate((valid) => {
-					if (valid) {
-						this.taskCreat()
-					} else {
-						console.log('error submit!!');
-						return false;
-					}
-				});
-			},
-			async taskCreat() {
-				const params = {
-					name: this.params.name, //任务名称
-					desc: this.params.desc, //任务描述
-					duration: Number(this.params.duration), //任务时长,
-					level: this.params.level == true ? 1 : 0
-				}
-				var res = await creatTaskApi(params)
-				if (res.data.status == 1) {
-					this.taskRelease(res.data.data[0])
-				}
-			},
 			// 获取用户信息列表
 			async getListUser() {
 				var res = await getUserList({
@@ -100,32 +38,27 @@
 					this.userList = res.data.data.data.rows
 				}
 			},
-			publishTask(id) {
-				var publishUserList = []
-				this.list.forEach(option => {
-					publishUserList.push(option[0])
-				})
-				const params = {
-					taskId: id.id,
-					userId: publishUserList
+			// 创建任务接口
+			async createTask(e) {
+				var res = await creatTaskApi(e.params)
+				if (res.data.status == 1) {
+					this.releaseTask({
+						userIds: e.userIds,
+						taskId: res.data.data[0].id
+					})
 				}
-				return params
 			},
-			async taskRelease(id) {
-				var res = await releaseTaskApi(this.publishTask(id))
-				console.log(res)
+			// 发布任务接口
+			async releaseTask(params) {
+				var res = await releaseTaskApi(params)
+				if (res.data.status == 1) {
+					console.log(res)
+				}
 			}
-
 		}
 	};
 </script>
 
 <style lang="scss" scoped>
-	.createTask {
-		width: 60%;
-	}
 
-	::v-deep .el-cascader {
-		width: 100%;
-	}
 </style>

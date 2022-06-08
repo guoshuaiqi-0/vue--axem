@@ -7,12 +7,13 @@
 		<div class="main">
 			<div class="left">
 				<div class="head">
-					<div class="newRole flex-centen mar-30"><span class="el-icon-user"></span>新增角色</div>
+					<div class="newRole flex-centen mar-30" @click="hand('newRole')"><span
+							class="el-icon-user"></span>新增角色</div>
 					<div class="newGroup flex-centen mar-30"><span class="el-icon-user"></span>新建分组</div>
 				</div>
 				<div class="conter">
-					<el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-						text-color="#666666" active-text-color="#6cd6bf">
+					<el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" text-color="#666666"
+						active-text-color="#6cd6bf">
 						<el-submenu :index="item.id+''" v-for="(item,index) in list" :key="index">
 							<template slot="title">
 								<i class="el-icon-location"></i>
@@ -54,6 +55,7 @@
 <script>
 	// @ is an alias to /src
 	import tableList from '../../components/tableList.vue'
+	import hand from '@/mixins/hand.js'
 	import {
 		getRoleGroupListApi,
 		getRoleListApi
@@ -63,6 +65,7 @@
 		components: {
 			tableList
 		},
+		mixins: [hand],
 		data() {
 			return {
 				activeIndex: '2',
@@ -128,6 +131,10 @@
 <style lang="scss" scoped>
 	h1 {
 		margin: 0;
+	}
+
+	.newRole {
+		cursor: pointer;
 	}
 
 	.roleManagement {

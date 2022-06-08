@@ -105,7 +105,7 @@
 			async infor() {
 				var res = await getInfoApi()
 				if (res.data.status == 1) {
-					this.phone = res.data.data[0].phone
+					this.phone = res.data.data.phone
 				} else if (res.data.status == 401) {
 					this.hand('about')
 
