@@ -14,7 +14,7 @@
 			</el-form-item>
 			<el-form-item label="执行人">
 				<el-select v-model="value" multiple placeholder="请选择">
-					<el-option v-for="item in userId" :key="item.id" :label="item.name" :value="item.id">
+					<el-option v-for="item in userIds" :key="item.id" :label="item.name" :value="item.id">
 						<span style="float: left">{{ item.name }}</span>
 						<span style="float: right; color: #8492a6; font-size: 13px">{{ item.id }}</span>
 					</el-option>
@@ -36,40 +36,53 @@
 			return {
 				params: {},
 				value: [],
-				key: ''
+				key: '',
+				userIds: []
 			}
 		},
-		props: ['userId', 'taskInfo'],
+		props: ['userId', 'taskInfo', 'userList'],
 		created() {
+			if (this.userId) {
+				this.userIds = this.userId
+			}
 			if (this.taskInfo) {
 				this.params = this.taskInfo
 				this.params.levelName = this.params.levelName == '紧急' ? 1 : 0;
 			}
-
+			if (this.userList) {
+				this.userIds = this.userList
+			}
 		},
 		watch: {
+			userId(val) {
+				this.userIds = val
+			},
 			taskInfo(val) {
 				this.params = val
 				this.params.levelName = this.params.levelName == '紧急' ? 1 : 0;
-				console.log(this.params)
+			},
+			userList(val) {
+				this.userIds = val
 			}
 		},
 		methods: {
 			submit() {
-				// console.log(this.params)
+				const params = {
+					name: this.params.taskName,
+					desc: this.params.updatedAt,
+					duration: this.params.duration,
+					level: this.params.levelName ? 1 : 0
+				}
 				if (this.userId) {
-					const params = {
-						name: this.params.taskName,
-						desc: this.params.updatedAt,
-						duration: this.params.duration,
-						level: this.params.levelName ? 1 : 0
-					}
 					this.$emit('creatTask', {
 						params: params,
 						userIds: this.value
 					})
-				} else {
-					console.log('00')
+				}else if(this.taskInfo){
+					params.id = this.taskInfo.id
+					this.$emit('updateTask', {
+						params: params,
+					})
 				}
 			}
 		}

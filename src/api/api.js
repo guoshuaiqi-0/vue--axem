@@ -203,3 +203,11 @@ export function getRoleListApi(params = {}) {
 export function getRoleCreateApi(params = {}) {
 	return axios.post('/role/create', params, getConfig())
 }
+/**
+ * 	编辑任务
+ * @param { } params 
+ */
+
+export function UpdateTaskApi(params = {}) {
+	return axios.post('/task/update', params, getConfig())
+}

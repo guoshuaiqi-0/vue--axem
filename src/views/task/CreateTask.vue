@@ -35,7 +35,6 @@
 				})
 				if (res.data.status == 1) {
 					this.userList = res.data.data.data.rows;
-					console.log(this.userList);
 				}
 			},
 			// 创建任务接口
@@ -51,9 +50,7 @@
 			// 发布任务接口
 			async releaseTask(params) {
 				var res = await releaseTaskApi(params)
-				if (res.data.status == 1) {
-					console.log(res)
-				}
+				if (res.data.status == 1) console.log('1')
 			}
 		}
 	};
