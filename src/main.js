@@ -16,7 +16,8 @@ Vue.use(new VueSocketIO({
 	debug: true,
 	// connection: 'http://8.131.89.181:7001', //这个地址是服务端地址
 	// connection: 'http://192.168.0.120:7001',
-	connection: 'http://192.168.0.104:7001',
+	// connection: 'http://192.168.0.104:7001',
+	connection: 'http://192.168.0.109:7001',
 	// connection: 'http://192.168.0.120:7001',
 }))
 

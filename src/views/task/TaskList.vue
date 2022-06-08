@@ -61,9 +61,9 @@
 			<el-button type="primary" @click="release()">发布</el-button>
 		</el-dialog>
 		<!-- 编辑任务的抽屉 -->
-		<el-drawer title="我是标题" :visible.sync="drawer"  :direction="direction" :before-close="handleClose" size="50%">
+		<el-dialog title="编辑内容" :visible.sync="drawer">
 			<taskEditor ref="task" :userList="userList" btnName="修改" :taskInfo="params" @my-modify="modify"></taskEditor>
-		</el-drawer>
+		</el-dialog>
 	</div>
 </template>
 
@@ -143,13 +143,6 @@
 			// 获取任务详情
 			async detailTask(taskId) {
 				return await getDetailTaskApi({taskId});
-				// if (res.data.status == 1) {
-				// 	this.taskId = res.data.data.taskId
-				// 	res.data.data.receivedData.forEach(item => {
-				// 		this.receivedData.push(item.userId)
-				// 	})
-				// 	this.getListUser()
-				// }
 			},
 			//获取未领取当前任务的人;
 			userArr(){
@@ -169,12 +162,6 @@
 						}
 					})
 					this.userList = targetArr;
-					// console.log(targetArr);
-					// console.log(allUser);
-					// console.log(taskUser);
-					// console.log(tempArr);
-					// console.log(detailArr.data.data.receivedData);
-					// console.log(userArr.data.data.data.rows);
 				})
 			},
 			// 获取用户信息列表
@@ -182,10 +169,6 @@
 				return await getUserList({
 					pagination: false
 				})
-				// if (res.data.status == 1) {
-				// 	this.userList = res.data.data.data.rows
-				// 	this.dialogVisible = true
-				// }
 			},
 			// 分页
 			handleSizeChange(val) {
@@ -205,7 +188,6 @@
 						userIds: [this.myid], //用户id，  如果给多个人发送任务，可以传数组，数组中是每一个人的id； 
 						taskId: key.id, //任务id   
 					}
-                    // console.log(params);
 					var res = await releaseTaskApi(params)
 					if (res.data.status == 1) {
 						this.$message({
